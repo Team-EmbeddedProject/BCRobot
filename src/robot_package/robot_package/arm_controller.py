@@ -35,7 +35,7 @@ class ArmController(Node):
         self.arm_init()
         
     def arm_init(self):
-        setPWMServoPulse(1, 2500, 1500)
+        setPWMServoPulse(1, 2000, 1500)
         self.robot_arm.servosMove([560, 2490, 1170, 1500])
     
     def arm_grab(self):
@@ -43,7 +43,7 @@ class ArmController(Node):
         time.sleep(1)
         self.robot_arm.servosMove([2200, 1200, 1800, 1500], 2000)
         time.sleep(2)
-        setPWMServoPulse(1, 2500, 1500)
+        setPWMServoPulse(1, 2000, 1500)
 
     def handle_servo_pulses(self, msg):
         self.get_logger().info(f'Received servo pulses: {msg.data}')
