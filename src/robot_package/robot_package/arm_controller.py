@@ -51,11 +51,11 @@ class ArmController(Node):
     
     def handle_coordinate_input(self, msg):
         self.get_logger().info(f'Received coordinate data: x:{msg.x} y:{msg.y} z:{msg.z}')
-        #self.robot_arm.setPitchRangeMoving([msg.x, msg.y, msg.z], 0, -90, 90, 1500)
-        time.sleep(2)
-        self.arm_grab()
-        time.sleep(2)
-        self.arm_init()
+        self.robot_arm.setPitchRangeMoving([msg.x, msg.y, msg.z], 0, -90, 90, 1500)
+        # time.sleep(2)
+        # self.arm_grab()
+        # time.sleep(2)
+        # self.arm_init()
 
 def main(args=None):
     rclpy.init(args=args)

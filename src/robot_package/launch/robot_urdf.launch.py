@@ -8,7 +8,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     # 패키지 디렉토리 경로 가져오기
     package_name = 'robot_package'
-    urdf_file_name = 'ocrobot.urdf'
+    urdf_file_name = 'bcrobot.urdf'
     
     urdf_file = os.path.join(
         get_package_share_directory(package_name),

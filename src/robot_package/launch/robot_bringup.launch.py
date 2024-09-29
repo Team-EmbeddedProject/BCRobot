@@ -13,7 +13,7 @@ def generate_launch_description():
     urdf_file = os.path.join(
         get_package_share_directory('robot_package'),
         'urdf',
-        'ocrobot.urdf')
+        'bcrobot.urdf')
 
     ydlidar_parameter_file = os.path.join(
         get_package_share_directory('ydlidar_ros2_driver'),

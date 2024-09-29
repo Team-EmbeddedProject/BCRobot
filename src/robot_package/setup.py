@@ -14,7 +14,8 @@ setup(
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')),
         (os.path.join('share', package_name, 'params'), glob('params/*.yaml')),
-        (os.path.join('share', package_name, 'urdf'), glob('urdf/*.urdf'))
+        (os.path.join('share', package_name, 'urdf'), glob('urdf/*.urdf')),
+        (os.path.join('share', package_name, 'worlds'), glob('worlds/*.world'))
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -25,11 +26,11 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'keyboad_motor_controller = robot_package.keyboard_motor_controller:main',
+            'keyboard_motor_controller = robot_package.keyboard_motor_controller:main',
             'sensor_processing = robot_package.sensor_processing:main',
             'arm_controller = robot_package.arm_controller:main',
             'motor_controller = robot_package.motor_controller:main',
-            'odom_publisher=robot_odometry.odom_publisher:main',
+            'odom_publisher=robot_package.odom_publisher:main',
         ],
     },
 )
