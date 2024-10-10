@@ -37,6 +37,7 @@ class OdometryPublisher(Node):
         self.linear_speed = msg.data
 
     def angular_speed_callback(self, msg):
+        # self.angular_speed = math.radians(msg.data)
         self.angular_speed = msg.data
 
     def update_odometry(self):
@@ -44,9 +45,13 @@ class OdometryPublisher(Node):
         dt = (current_time - self.last_time).nanoseconds / 1e9
         
         # 로봇의 위치와 방향 업데이트
-        self.pose_x += self.linear_speed * math.cos(self.yaw) * dt
-        self.pose_y += self.linear_speed * math.sin(self.yaw) * dt
-        self.yaw += self.angular_speed * dt
+        self.pose_x += self.linear_speed * math.cos(self.yaw) * dt / 2
+        self.pose_y += self.linear_speed * math.sin(self.yaw) * dt / 2
+        self.yaw += self.angular_speed * dt * 3
+        while self.yaw > math.pi:
+            self.yaw -= 2.0 * math.pi
+        while self.yaw < -math.pi:
+            self.yaw += 2.0 * math.pi
 
         self.get_logger().info(f"Pose X: {self.pose_x}, Pose Y: {self.pose_y}, Yaw: {self.yaw}")
         
@@ -97,10 +102,15 @@ class OdometryPublisher(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = OdometryPublisher()
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
+    odom_publisher = OdometryPublisher()
+    try:
+        rclpy.spin(odom_publisher)  # 노드 스핀 (실행)
+    except KeyboardInterrupt:
+        print("Shutting down...")  # 종료 메시지 출력
+    finally:
+        if rclpy.ok():
+            odom_publisher.destroy_node()
+            rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
