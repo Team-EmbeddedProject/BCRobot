@@ -15,6 +15,7 @@ class AutoDrive(Node):
         self.timer = self.create_timer(self.timer_period, self.publish_velocity)
         self.state_duration = 0
         self.total_duration = 0  # 전체 경과 시간을 추적
+        self.forward_duration = 2.0
 
     def move_forward(self):
         self.velocity.linear.x = 0.5
@@ -25,14 +26,14 @@ class AutoDrive(Node):
     
     def turn_left(self):
         self.velocity.linear.x = 0.0
-        self.velocity.angular.z = 0.25
+        self.velocity.angular.z = 0.28
 
         self.vel_publisher.publish(self.velocity)
         self.get_logger().info(f'Publishing velocity: turn left: linear={self.velocity.linear.x}, angular={self.velocity.angular.z}')
     
     def turn_right(self):
         self.velocity.linear.x = 0.0
-        self.velocity.angular.z = -0.25
+        self.velocity.angular.z = -0.28
 
         self.vel_publisher.publish(self.velocity)
         self.get_logger().info(f'Publishing velocity: turn right: linear={self.velocity.linear.x}, angular={self.velocity.angular.z}')
@@ -45,14 +46,19 @@ class AutoDrive(Node):
         self.get_logger().info(f'Stopping: linear={self.velocity.linear.x}, angular={self.velocity.angular.z}')
 
     def publish_velocity(self):
-        if self.total_duration >= 6.0:
+        
+        if self.total_duration >= 7.0:
             self.state = 'stop'
 
         if self.state == 'move_forward':
             self.move_forward()
             self.state_duration += self.timer_period
-            if self.state_duration >= 2.0:  # 3초 동안 전진 후
+            if self.state_duration >= self.forward_duration:
                 self.state = 'turn_left'
+                if self.forward_duration == 2.0:
+                    self.forward_duration = 4.0
+                elif self.forward_duration == 4.0:
+                    self.forward_duration = 2.0
                 self.state_duration = 0
 
         elif self.state == 'turn_left':
